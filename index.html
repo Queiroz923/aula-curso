@@ -83,6 +83,7 @@ main{overflow-x:clip}
 /* Hero */
 .hero{position:relative;background:var(--preto);color:var(--on-preto);min-height:560px;display:grid;align-items:center;padding:120px 0 88px;isolation:isolate}
 .hero__foto{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover}
+.hero__midia{position:absolute;inset:0;z-index:-2}
 .hero::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(15,15,15,.62)}
 .hero__in{display:grid;gap:var(--space-6);justify-items:center;text-align:center;max-width:760px}
 .reserva{display:flex;flex-direction:column;gap:var(--space-2);width:100%;max-width:440px;background:var(--branco);border-radius:var(--radius-md);padding:var(--space-2)}
@@ -451,14 +452,16 @@ main{overflow-x:clip}
 @media (max-width:767px){
   /* celular: vídeo vertical ocupa a tela, o texto começa sobre a bancada, abaixo da vela */
   .hero{min-height:0;align-items:start;padding:72vh 0 var(--space-16);padding-top:72svh}
-  .hero__foto{inset:0 0 auto;height:100vh;height:100svh}
+  .hero__midia{inset:0 0 auto;height:100vh;height:100svh}
   /* gradiente por cima do vídeo (em vez de máscara, que pesa ao rolar): escurece o topo e funde o pé do vídeo no preto */
   .hero::before{inset:0 0 auto;height:100vh;height:100svh;background:linear-gradient(180deg,rgba(15,15,15,.45) 0,rgba(15,15,15,0) 16%,rgba(15,15,15,0) 50%,rgba(15,15,15,.6) 72%,#0F0F0F 97%)}
 }
 @media (min-width:768px){
   /* computador: vídeo horizontal deslocado para a direita, texto à esquerda sobre a parte escura */
-  .hero__foto{left:24%}
-  .hero::before{background:linear-gradient(90deg,#0F0F0F 0,#0F0F0F 24%,rgba(15,15,15,.55) 40%,rgba(15,15,15,0) 64%)}
+  /* vídeo inteiro na altura do topo (sem cortar a vela), centrado em 70% da largura; bordas fundem no preto */
+  .hero__midia{inset:0 auto;left:70%;height:100%;aspect-ratio:16/9;transform:translateX(-50%)}
+  .hero__midia::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0F0F0F 0,rgba(15,15,15,0) 30%,rgba(15,15,15,0) 86%,#0F0F0F 100%)}
+  .hero::before{background:linear-gradient(90deg,rgba(15,15,15,.7) 0,rgba(15,15,15,.3) 35%,rgba(15,15,15,0) 55%)}
   .hero__in{width:100%;max-width:var(--container);justify-items:start;text-align:left}
   .hero__in>*{max-width:min(520px,52vw)}
   .hero .t-xl{font-size:clamp(34px,5vw,60px)}
@@ -586,7 +589,7 @@ main{overflow-x:clip}
 
 <main id="conteudo">
   <section class="hero" id="inicio" aria-labelledby="hero-titulo">
-    <video class="hero__foto" autoplay muted playsinline preload="auto" aria-hidden="true" disablepictureinpicture><source src="hero-computador.mp4" type="video/mp4" media="(min-width:768px)"><source src="hero-celular.mp4" type="video/mp4"></video>
+    <div class="hero__midia" aria-hidden="true"><video class="hero__foto" autoplay muted playsinline preload="auto" disablepictureinpicture><source src="hero-computador.mp4" type="video/mp4" media="(min-width:768px)"><source src="hero-celular.mp4" type="video/mp4"></video></div>
     <div class="wrap hero__in">
       <span class="pilula">Faça sua festa na DIO</span>
       <h1 class="t-xl" id="hero-titulo">Sua festa, <span class="am">nossa chapa.</span></h1>
@@ -850,11 +853,18 @@ main{overflow-x:clip}
   var heroVideo = document.querySelector(".hero__foto");
   if (heroVideo){
     var semMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var inicioChama = function(){ return /computador/.test(heroVideo.currentSrc) ? 3 : 5.6; };
+    // trecho que se repete: a câmera do vídeo se aproxima devagar, então o início e o fim
+    // foram escolhidos onde o hambúrguer está na mesma posição (o loop não "pula")
+    var trecho = function(){ return /computador/.test(heroVideo.currentSrc) ? [5.5, 7.85] : [5, 7]; };
     heroVideo.muted = true;
-    var irParaChama = function(){ heroVideo.currentTime = semMovimento ? heroVideo.duration - .1 : inicioChama(); };
+    var irParaChama = function(){ heroVideo.currentTime = semMovimento ? heroVideo.duration - .1 : trecho()[0]; };
     if (heroVideo.readyState >= 1) irParaChama(); else heroVideo.addEventListener("loadedmetadata", irParaChama);
-    heroVideo.addEventListener("ended", function(){ heroVideo.currentTime = inicioChama(); heroVideo.play(); });
+    heroVideo.addEventListener("ended", function(){ heroVideo.currentTime = trecho()[0]; heroVideo.play(); });
+    var vigiar = function(){ if (!heroVideo.paused && heroVideo.currentTime >= trecho()[1]) heroVideo.currentTime = trecho()[0]; };
+    if ("requestVideoFrameCallback" in heroVideo){
+      var aCadaQuadro = function(){ vigiar(); heroVideo.requestVideoFrameCallback(aCadaQuadro); };
+      heroVideo.requestVideoFrameCallback(aCadaQuadro);
+    } else heroVideo.addEventListener("timeupdate", vigiar);
     if (semMovimento){
       // sem animação: fica parado com a vela acesa
       heroVideo.removeAttribute("autoplay");
