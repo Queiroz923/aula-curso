@@ -389,13 +389,14 @@ main{overflow-x:clip}
 /* Mobile: pacotes com efeito de vidro e cartões destacados como blocos */
 @keyframes brilho-vidro{0%{opacity:0;transform:translateX(0) skewX(-24deg)}20%,80%{opacity:1}100%{opacity:0;transform:translateX(190%) skewX(-24deg)}}
 @media (max-width:999px){
-  .gigante{margin-bottom:-.24em}
+  .gigante{margin-bottom:-.13em}
   .vidros{gap:var(--space-8)}
   .vidros>li{position:relative;isolation:isolate}
   .vidros>li::before,.vidros>li::after{content:"";position:absolute;z-index:-1;border-radius:999px;filter:blur(28px);pointer-events:none}
   .vidros>li::before{width:72%;height:150px;left:-10%;top:16%;background:rgba(250,193,17,.55);transform:skewX(-22deg) rotate(-6deg)}
   .vidros>li::after{width:56%;height:130px;right:-8%;bottom:24%;background:rgba(15,15,15,.14);transform:skewX(-22deg) rotate(-6deg)}
-  .vidro{background:rgba(255,255,255,.5);border:1px solid rgba(15,15,15,.14);box-shadow:0 20px 44px rgba(15,15,15,.14),0 2px 8px rgba(15,15,15,.06),inset 0 1px 0 rgba(255,255,255,.9)}
+  /* topo do cartão mais transparente e com desfoque leve: a parte de baixo do "Pacotes" continua aparecendo, embaçada */
+  .vidro{background:linear-gradient(180deg,rgba(255,255,255,.16) 0,rgba(255,255,255,.42) 60px,rgba(255,255,255,.56) 160px);-webkit-backdrop-filter:blur(5px) saturate(160%);backdrop-filter:blur(5px) saturate(160%);border:1px solid rgba(15,15,15,.14);box-shadow:0 20px 44px rgba(15,15,15,.14),0 2px 8px rgba(15,15,15,.06),inset 0 1px 0 rgba(255,255,255,.9)}
   .vidro--destaque{border-color:var(--amarelo);box-shadow:0 0 0 1px var(--amarelo),0 20px 44px rgba(250,193,17,.3),0 2px 8px rgba(15,15,15,.06),inset 0 1px 0 rgba(255,255,255,.9)}
   .vidro.brilhou::before{animation:brilho-vidro 1.6s var(--ease) .35s both}
 }
@@ -411,6 +412,91 @@ main{overflow-x:clip}
   #espaco .video-espaco[data-pendente] .video-quadro{transform:scale(.9)}
   #espaco .video-quadro{transition:transform 900ms cubic-bezier(.16,1,.3,1) 150ms}
 }
+/* Mobile: site mais animado e interativo ao rolar */
+@keyframes mob-entrar{from{opacity:0;transform:translateY(28px);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes mob-zoom{from{scale:1.18}to{scale:1}}
+@keyframes mob-flutuar{from{translate:0 0}to{translate:18px -22px}}
+@keyframes mob-pulso{from{transform:scale(1);opacity:.55}to{transform:scale(1.75);opacity:0}}
+@keyframes mob-toque{to{transform:translate(-50%,-50%) scale(1);opacity:0}}
+.progresso{display:none}
+@media (max-width:767px){
+  /* barra de progresso da rolagem */
+  .progresso{display:block;position:fixed;top:0;left:0;right:0;height:3px;z-index:70;background:var(--amarelo);box-shadow:0 0 10px rgba(250,193,17,.7);transform-origin:0 50%;transform:scaleX(var(--p,0));pointer-events:none}
+
+  /* hero: entrada em sequência, foto com zoom e parallax, conteúdo some suave ao rolar */
+  .hero{overflow:hidden}
+  .hero__foto{animation:mob-zoom 1.8s cubic-bezier(.16,1,.3,1) both;translate:0 var(--hero-y,0px)}
+  .hero__in{translate:0 var(--hero-t,0px);opacity:var(--hero-o,1)}
+  .hero__in>*{animation:mob-entrar 900ms cubic-bezier(.16,1,.3,1) both}
+  .hero__in>:nth-child(2){animation-delay:120ms}
+  .hero__in>:nth-child(3){animation-delay:240ms}
+  .hero__in>:nth-child(4){animation-delay:360ms}
+  .hero__in>:nth-child(5){animation-delay:480ms}
+
+  /* entradas ao rolar: mais distância, mola e desfoque */
+  .revelar{transition:opacity 750ms var(--ease),transform 950ms cubic-bezier(.16,1,.3,1),filter 750ms var(--ease),clip-path 1100ms cubic-bezier(.16,1,.3,1),scale 180ms var(--ease)}
+  .revelar[data-pendente]{opacity:0;transform:translateY(48px) scale(.95);filter:blur(5px)}
+
+  /* títulos das seções sobem de dentro de uma máscara */
+  .cabeca .t-l{clip-path:inset(-20%);transition:clip-path 900ms cubic-bezier(.16,1,.3,1) 120ms,transform 900ms cubic-bezier(.16,1,.3,1) 120ms}
+  .cabeca.revelar[data-pendente]{transform:translateY(20px);filter:none}
+  .cabeca.revelar[data-pendente] .t-l{clip-path:inset(0 0 100% 0);transform:translateY(70%)}
+
+  /* "Pacotes" gigante: letras se juntam ao aparecer */
+  .gigante .g:first-child{display:inline-block;transition:letter-spacing 1200ms cubic-bezier(.16,1,.3,1),opacity 900ms var(--ease),filter 900ms var(--ease),transform 1200ms cubic-bezier(.16,1,.3,1)}
+  .gigante.revelar[data-pendente]{opacity:1;transform:none;filter:none}
+  .gigante.revelar[data-pendente] .g:first-child{letter-spacing:.4em;opacity:0;filter:blur(10px);transform:translateY(35%)}
+
+  /* cartões de pacote sobem e crescem */
+  .vidros>.revelar[data-pendente]{transform:translateY(80px) scale(.9)}
+  .vidros>li::before{animation:mob-flutuar 7s ease-in-out infinite alternate}
+  .vidros>li::after{animation:mob-flutuar 9s ease-in-out -4s infinite alternate-reverse}
+
+  /* fotos abrem como uma janela, com a imagem dando zoom para trás */
+  .foto.revelar,.cartao-img.revelar{clip-path:inset(0 round var(--radius-md))}
+  .foto.revelar[data-pendente],.cartao-img.revelar[data-pendente]{clip-path:inset(16% 12% round var(--radius-md));transform:translateY(32px);filter:none}
+  .foto.revelar img,.cartao-img.revelar img{transition:transform 1400ms cubic-bezier(.16,1,.3,1)}
+  .foto.revelar[data-pendente] img,.cartao-img.revelar[data-pendente] img{transform:scale(1.35)}
+
+  /* "Como funciona": passos entram um por um */
+  .passos li{transition:opacity 600ms var(--ease),transform 750ms cubic-bezier(.34,1.56,.64,1)}
+  .passos li:nth-child(1){transition-delay:250ms}
+  .passos li:nth-child(2){transition-delay:400ms}
+  .passos li:nth-child(3){transition-delay:550ms}
+  .revelar[data-pendente] .passos li{opacity:0;transform:translateX(-32px)}
+
+  /* depoimentos chegam pelos lados, estrelas se acendem */
+  .mosaico>.revelar:nth-child(odd)[data-pendente]{transform:translateX(-56px) rotate(-3deg)}
+  .mosaico>.revelar:nth-child(even)[data-pendente]{transform:translateX(56px) rotate(3deg)}
+  .depo .estrelas{display:inline-block;transition:letter-spacing 900ms cubic-bezier(.16,1,.3,1) 300ms,opacity 600ms var(--ease) 300ms}
+  .mosaico>.revelar[data-pendente] .estrelas{letter-spacing:14px;opacity:0}
+
+  /* benefícios em vidro tombam para frente */
+  .trio--vidro>.revelar[data-pendente]{transform:perspective(700px) rotateX(28deg) translateY(56px) scale(.94)}
+  .ben-fundo span{animation:mob-flutuar 8s ease-in-out infinite alternate}
+  .ben-fundo span:nth-child(2){animation-duration:10s;animation-direction:alternate-reverse}
+  .ben-fundo span:nth-child(3){animation-duration:6s;animation-delay:-3s}
+
+  /* perguntas e rodapé entram em cascata */
+  .faq__item.revelar[data-pendente]{transform:translateX(40px);filter:none}
+  .rcard.revelar[data-pendente]{transform:translateY(40px) scale(.94)}
+
+  /* galeria: a foto do centro fica em destaque enquanto desliza */
+  .galeria .trilho>li{transition:scale 250ms var(--ease),opacity 250ms var(--ease);scale:var(--g-s,1);opacity:var(--g-o,1)}
+
+  /* resposta ao toque */
+  .btn,.rcard__btn,.contatos a{position:relative;overflow:hidden;isolation:isolate}
+  .btn{transition:transform 150ms ease-out,background-color 150ms ease-out,color 150ms ease-out,border-color 150ms ease-out,scale 160ms var(--ease)}
+  .btn:active,.rcard__btn:active,.contatos a:active,.seta:active{scale:.95}
+  .cartao:active,.vidro:active,.depo:active,.rcard:active,.faq__q:active{scale:.98}
+  .vidro,.depo,.rcard:not(.revelar){transition:transform 250ms var(--ease),border-color 250ms,scale 180ms var(--ease)}
+  .cartao:not(.revelar){transition:scale 180ms var(--ease)}
+  .toque{position:absolute;z-index:-1;left:var(--x);top:var(--y);width:var(--d);height:var(--d);border-radius:50%;background:currentColor;opacity:.22;transform:translate(-50%,-50%) scale(0);animation:mob-toque 600ms var(--ease) forwards;pointer-events:none}
+
+  /* botão do WhatsApp pulsando */
+  .flutuante::after{content:"";position:absolute;inset:-2px;border-radius:50%;border:2px solid var(--amarelo);animation:mob-pulso 1.8s var(--ease) infinite;pointer-events:none}
+  .flutuante:active{scale:.92}
+}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{transition:none!important;animation:none!important}
@@ -423,6 +509,7 @@ main{overflow-x:clip}
 
 
 <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<div class="progresso" aria-hidden="true"></div>
 
 <header class="topo">
   <div class="barra">
@@ -774,6 +861,9 @@ main{overflow-x:clip}
   var ioVidro = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add("brilhou"); ioVidro.unobserve(e.target); } }); }, {threshold:.35});
   document.querySelectorAll(".vidro").forEach(function(v){ ioVidro.observe(v); });
   var io =new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting){ var el = e.target; setTimeout(function(){ el.removeAttribute("data-pendente"); }, (el._i || 0) * 60); io.unobserve(el); } }); }, {rootMargin:"0px 0px -10% 0px"});
+  // Mobile: mais elementos entram ao rolar
+  var mob = window.matchMedia("(max-width:767px)").matches;
+  if (mob) document.querySelectorAll(".gigante, .faq__item, .galeria, .rodape__topo, .rcard").forEach(function(el){ el.classList.add("revelar"); });
   document.querySelectorAll(".revelar").forEach(function(el){
     if (el.getBoundingClientRect().top > window.innerHeight){
       var irmaos = el.parentElement.querySelectorAll(":scope > .revelar");
@@ -781,6 +871,63 @@ main{overflow-x:clip}
       el.setAttribute("data-pendente",""); io.observe(el);
     }
   });
+  if (!mob) return;
+
+  // Mobile: barra de progresso e parallax do hero
+  var prog = document.querySelector(".progresso"), heroFoto = hero.querySelector(".hero__foto"), heroIn = hero.querySelector(".hero__in");
+  var trilho = document.getElementById("trilho-galeria"), rolarAgendado = false;
+  function rolar(){
+    rolarAgendado = false;
+    var y = window.scrollY, max = document.documentElement.scrollHeight - window.innerHeight, h = hero.offsetHeight;
+    prog.style.setProperty("--p", max > 0 ? Math.min(y / max, 1).toFixed(4) : 0);
+    if (y <= h){
+      heroFoto.style.setProperty("--hero-y", (y * .4).toFixed(1) + "px");
+      heroIn.style.setProperty("--hero-t", (y * -.18).toFixed(1) + "px");
+      heroIn.style.setProperty("--hero-o", Math.max(1 - y / (h * .75), 0).toFixed(3));
+    }
+  }
+  window.addEventListener("scroll", function(){ if (!rolarAgendado){ rolarAgendado = true; requestAnimationFrame(rolar); } }, {passive:true});
+  rolar();
+
+  // Mobile: na galeria, a foto mais ao centro fica maior
+  function galeria(){
+    var r = trilho.getBoundingClientRect(), c = r.left + r.width / 2;
+    trilho.querySelectorAll(":scope > li").forEach(function(li){
+      var b = li.getBoundingClientRect(), d = Math.min(Math.abs(b.left + b.width / 2 - c) / r.width, 1);
+      li.style.setProperty("--g-s", (1 - d * .14).toFixed(3));
+      li.style.setProperty("--g-o", (1 - d * .5).toFixed(3));
+    });
+  }
+  if (trilho){ trilho.addEventListener("scroll", function(){ requestAnimationFrame(galeria); }, {passive:true}); galeria(); }
+
+  // Mobile: nota do Google conta até 4,9 quando aparece
+  var nota = document.querySelector("#aval-titulo .am");
+  if (nota){
+    var ioNota = new IntersectionObserver(function(es){
+      if (!es[0].isIntersecting) return;
+      ioNota.disconnect();
+      var t0 = performance.now();
+      (function passo(t){
+        var k = Math.min(Math.max((t - t0) / 1300, 0), 1);
+        nota.textContent = (4.9 * (1 - Math.pow(1 - k, 3))).toFixed(1).replace(".", ",");
+        if (k < 1) requestAnimationFrame(passo);
+      })(t0);
+    }, {threshold:.6});
+    ioNota.observe(nota);
+  }
+
+  // Mobile: onda de toque nos botões
+  document.addEventListener("pointerdown", function(e){
+    var alvo = e.target.closest(".btn, .rcard__btn, .contatos a");
+    if (!alvo) return;
+    var r = alvo.getBoundingClientRect(), s = document.createElement("span");
+    s.className = "toque";
+    s.style.setProperty("--x", (e.clientX - r.left) + "px");
+    s.style.setProperty("--y", (e.clientY - r.top) + "px");
+    s.style.setProperty("--d", (Math.max(r.width, r.height) * 2.2) + "px");
+    alvo.appendChild(s);
+    setTimeout(function(){ s.remove(); }, 650);
+  }, {passive:true});
 })();
 </script>
 
