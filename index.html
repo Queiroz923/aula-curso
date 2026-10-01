@@ -433,8 +433,11 @@ main{overflow-x:clip}
 }
 /* Hero em vídeo: vela acendendo no hambúrguer */
 .hero{background:var(--preto);overflow:hidden}
-.hero__foto{transition:opacity 700ms var(--ease)}
-.hero__foto.espera{opacity:0}
+/* imagem da vela acesa por trás do vídeo: aparece antes de carregar ou se o celular bloquear o autoplay */
+.hero__foto{background:var(--preto) url(hero-capa-celular.jpg) center/cover no-repeat}
+@media (min-width:768px){.hero__foto{background-image:url(hero-capa-computador.jpg)}}
+/* nunca mostrar o botão de play do navegador (iPhone em modo economia) */
+.hero__foto::-webkit-media-controls,.hero__foto::-webkit-media-controls-start-playback-button,.hero__foto::-webkit-media-controls-overlay-play-button{display:none!important;-webkit-appearance:none}
 @media (max-width:767px){
   /* celular: vídeo vertical ocupa a tela, o texto começa sobre a bancada, abaixo da vela */
   .hero{min-height:0;align-items:start;padding:72vh 0 var(--space-16);padding-top:72svh}
@@ -835,24 +838,26 @@ main{overflow-x:clip}
   function wa(msg){ return "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg); }
   document.querySelectorAll("[data-wa]").forEach(function(a){ a.href = wa(a.getAttribute("data-wa")); a.target = "_blank"; a.rel = "noopener"; });
 
-  // Vídeo do hero: aparece com fade quando começa a tocar e, depois da primeira vez,
-  // repete só o trecho com a vela já acesa (sem voltar para a vela apagada)
+  // Vídeo do hero como um GIF: começa com a vela já acesa e repete só a chama.
+  // Se o celular bloquear o autoplay (modo economia de energia/dados), tenta de novo no primeiro toque ou rolagem.
   var heroVideo = document.querySelector(".hero__foto");
   if (heroVideo){
     var semMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var inicioChama = function(){ return /computador/.test(heroVideo.currentSrc) ? 3 : 5.6; };
     heroVideo.muted = true;
-    if (heroVideo.readyState < 2) heroVideo.classList.add("espera");
-    heroVideo.addEventListener("loadeddata", function(){ heroVideo.classList.remove("espera"); });
-    heroVideo.addEventListener("ended", function(){
-      heroVideo.currentTime = /computador/.test(heroVideo.currentSrc) ? 4 : 5.6;
-      heroVideo.play();
-    });
+    var irParaChama = function(){ heroVideo.currentTime = semMovimento ? heroVideo.duration - .1 : inicioChama(); };
+    if (heroVideo.readyState >= 1) irParaChama(); else heroVideo.addEventListener("loadedmetadata", irParaChama);
+    heroVideo.addEventListener("ended", function(){ heroVideo.currentTime = inicioChama(); heroVideo.play(); });
     if (semMovimento){
-      // sem animação: fica parado no último quadro, com a vela acesa
+      // sem animação: fica parado com a vela acesa
       heroVideo.removeAttribute("autoplay");
       heroVideo.pause();
-      var parar = function(){ heroVideo.pause(); heroVideo.currentTime = heroVideo.duration - .1; };
-      if (heroVideo.readyState >= 1) parar(); else heroVideo.addEventListener("loadedmetadata", parar);
+    } else {
+      var eventos = ["touchstart", "pointerdown", "scroll", "keydown"];
+      var tocar = function(){ var p = heroVideo.play(); if (p && p.catch) p.catch(function(){}); };
+      var destravar = function(){ tocar(); eventos.forEach(function(ev){ window.removeEventListener(ev, destravar); }); };
+      tocar();
+      eventos.forEach(function(ev){ window.addEventListener(ev, destravar, {passive:true}); });
     }
   }
 
