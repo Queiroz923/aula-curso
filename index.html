@@ -249,7 +249,15 @@ main{overflow-x:clip}
 .vidro__preco{display:flex;align-items:baseline;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-1)}
 .vidro__preco strong{font-family:var(--font-titulo);font-weight:400;font-size:clamp(30px,3.2vw,38px);line-height:1.05}
 .vidro__preco small{font-weight:700;font-size:15px;color:#3F3F3F}
-.vidro__topo{grid-template-rows:auto auto 1fr}
+.vidro__topo{grid-template-rows:auto auto auto 1fr}
+/* Pacotes enxutos: frase curta de proposta, itens curtos e uma linha com mínimo e exemplo */
+.vidro__tag{font-size:15px;line-height:20px;color:#3F3F3F;margin-top:-6px}
+.vidro__info{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px var(--space-3);margin:0;padding-top:var(--space-3);border-top:1px solid rgba(15,15,15,.10);font-size:13px;line-height:18px;color:#4A4A4A}
+.vidro__info span:first-child{font-weight:700;color:var(--preto)}
+.vidro .vidro__corpo{gap:var(--space-4)}
+.vidro .vidro__foto{aspect-ratio:16/9}
+.vidro .checks{gap:var(--space-2)}
+.vidro .checks small{display:inline;margin:0 0 0 2px;font-size:13px;color:#6D6D6D}
 .vidro__preco--bloco{position:relative;isolation:isolate;align-self:end;width:100%;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);margin-top:var(--space-2);border-radius:14px;background:rgba(255,255,255,.75);border:1px solid rgba(15,15,15,.12);color:var(--preto)}
 .vidro__preco--bloco strong{font-size:clamp(24px,2.3vw,30px);white-space:nowrap}
 .vidro__preco--bloco small{color:var(--preto);font-size:15px;line-height:18px;padding:4px 10px;border-radius:999px;background:rgba(15,15,15,.07)}
@@ -600,73 +608,69 @@ main{overflow-x:clip}
           <header class="vidro__topo">
             <span class="selo-vidro">Mais pedido</span>
             <h3 class="vidro__nome" id="p1"><span>Pacote</span> DIO Kids</h3>
+            <p class="vidro__tag">Para a festa da criançada</p>
             <p class="vidro__preco vidro__preco--bloco vidro__preco--destaque"><strong>R$ 29,90</strong><small>por criança</small></p>
           </header>
           <div class="vidro__corpo">
-          <figure class="vidro__foto"><img src="pacote-kids.jpg" alt="Criança mordendo um hambúrguer em uma festa de aniversário, com batata frita e refrigerante na mesa e balões amarelos e pretos ao fundo" width="960" height="600"></figure>
-          <p class="vidro__desc">Perfeito para aniversários infantis e comemorações com a criançada.</p>
-          <div class="vidro__bloco">
-            <p class="vidro__rot">Cada criança recebe</p>
-            <ul class="checks"><li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>2 DIO Kids</strong><small>Pão brioche, hambúrguer de 60g e queijo</small></span></li><li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>1 Porção individual de batata frita</strong></span></li><li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>1 Refrigerante caçulinha de 200 ml</strong></span></li></ul>
-          </div>
-          <div class="vidro__bloco">
-            <dl class="vidro__minimo"><dt>Contratação mínima</dt><dd>10 crianças</dd></dl>
-            <table class="vidro__ex"><caption class="vidro__rot">Exemplo</caption><tbody><tr><td>10 crianças</td><td>R$ 299,00</td></tr><tr><td>15 crianças</td><td>R$ 448,50</td></tr><tr><td>20 crianças</td><td>R$ 598,00</td></tr></tbody></table>
-          </div>
-          <div class="vidro__acao">
-            <a class="btn btn--amarelo" href="#" data-wa="Oi! Quero reservar a DIO com o Pacote DIO Kids. Pode me passar as datas?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5 5.3 15.6A8 8 0 1 1 8.6 18.8Z"/><path d="M9 10.5h6M9 13.5h4"/></svg>Reservar pelo WhatsApp</a>
-            <p class="vidro__nota">O número de convidados é definido antecipadamente, deixando tudo organizado para a festa.</p>
-          </div>
+            <figure class="vidro__foto"><img src="pacote-kids.jpg" alt="Criança mordendo um hambúrguer em uma festa de aniversário, com batata frita e refrigerante na mesa e balões amarelos e pretos ao fundo" width="960" height="600"></figure>
+            <div class="vidro__bloco">
+              <p class="vidro__rot">Cada criança recebe</p>
+              <ul class="checks">
+                <li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>2 DIO Kids</strong> <small>brioche, carne de 60 g e queijo</small></span></li>
+                <li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Batata frita individual</strong></span></li>
+                <li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Refri caçulinha 200 ml</strong></span></li>
+              </ul>
+            </div>
+            <p class="vidro__info"><span>Mínimo de 10 crianças</span><span>10 crianças = R$ 299,00</span></p>
+            <div class="vidro__acao">
+              <a class="btn btn--amarelo" href="#" data-wa="Oi! Quero reservar a DIO com o Pacote DIO Kids. Pode me passar as datas?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5 5.3 15.6A8 8 0 1 1 8.6 18.8Z"/><path d="M9 10.5h6M9 13.5h4"/></svg>Reservar pelo WhatsApp</a>
+            </div>
           </div>
         </article></li>
         <li class="revelar"><article class="vidro" aria-labelledby="p2">
           <header class="vidro__topo">
             <span class="selo-vidro">Aniversários e confraternizações</span>
             <h3 class="vidro__nome" id="p2"><span>Pacote</span> DIO Família</h3>
+            <p class="vidro__tag">Lanche completo para cada convidado</p>
             <p class="vidro__preco vidro__preco--bloco"><strong>R$ 44,90</strong><small>por pessoa</small></p>
           </header>
           <div class="vidro__corpo">
-          <figure class="vidro__foto"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-foto="foto_burger" alt="Hambúrguer com cheddar na mão"></figure>
-          <p class="vidro__desc">Ideal para aniversários, confraternizações e encontros especiais com amigos e família.</p>
-          <div class="vidro__bloco">
-            <p class="vidro__rot">Cada convidado recebe</p>
-            <ul class="checks"><li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>1 Hambúrguer de 100 g</strong><small>À escolha entre X-Salada ou X-Bacon</small></span></li><li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>1 Porção individual de batata frita</strong></span></li><li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>1 Refrigerante lata</strong></span></li></ul>
-          </div>
-          <div class="vidro__bloco">
-            <p class="vidro__rot">Para compartilhar</p>
-            <p class="vidro__compartilhar">A cada 5 convidados, incluímos <strong>1 porção de calabresa acebolada</strong> para a mesa.</p>
-          </div>
-          <div class="vidro__bloco">
-            <dl class="vidro__minimo"><dt>Contratação mínima</dt><dd>15 convidados</dd></dl>
-            <table class="vidro__ex"><caption class="vidro__rot">Exemplo</caption><tbody><tr><td>15 convidados</td><td>R$ 673,50</td></tr><tr><td>20 convidados</td><td>R$ 898,00</td></tr><tr><td>30 convidados</td><td>R$ 1.347,00</td></tr></tbody></table>
-          </div>
-          <div class="vidro__acao">
-            <a class="btn btn--amarelo" href="#" data-wa="Oi! Quero reservar a DIO com o Pacote DIO Família. Pode me passar as datas?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5 5.3 15.6A8 8 0 1 1 8.6 18.8Z"/><path d="M9 10.5h6M9 13.5h4"/></svg>Reservar pelo WhatsApp</a>
-            <p class="vidro__nota">Sua comemoração com o sabor da DIO Burger.</p>
-          </div>
+            <figure class="vidro__foto"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-foto="foto_burger" alt="Hambúrguer com cheddar na mão"></figure>
+            <div class="vidro__bloco">
+              <p class="vidro__rot">Cada convidado recebe</p>
+              <ul class="checks">
+                <li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Hambúrguer de 100 g</strong> <small>X-Salada ou X-Bacon</small></span></li>
+                <li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Batata frita individual</strong></span></li>
+                <li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Refri lata</strong></span></li>
+                <li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>+ Calabresa acebolada</strong> <small>1 porção a cada 5 convidados</small></span></li>
+              </ul>
+            </div>
+            <p class="vidro__info"><span>Mínimo de 15 convidados</span><span>15 convidados = R$ 673,50</span></p>
+            <div class="vidro__acao">
+              <a class="btn btn--amarelo" href="#" data-wa="Oi! Quero reservar a DIO com o Pacote DIO Família. Pode me passar as datas?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5 5.3 15.6A8 8 0 1 1 8.6 18.8Z"/><path d="M9 10.5h6M9 13.5h4"/></svg>Reservar pelo WhatsApp</a>
+            </div>
           </div>
         </article></li>
         <li class="revelar"><article class="vidro" aria-labelledby="p3">
           <header class="vidro__topo">
             <span class="selo-vidro">Comanda individual</span>
             <h3 class="vidro__nome" id="p3"><span>Pacote</span> DIO Exclusivo</h3>
+            <p class="vidro__tag">O espaço é seu, cada um paga o seu</p>
             <p class="vidro__preco vidro__preco--bloco"><strong>R$ 200,00</strong><small>reserva do espaço</small></p>
           </header>
           <div class="vidro__corpo">
-          <figure class="vidro__foto"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-foto="foto_chapa" alt="Hambúrgueres na chapa com cheddar"></figure>
-          <p class="vidro__desc">Reserve o espaço da DIO Burger exclusivamente para sua comemoração.</p>
-          <div class="vidro__bloco">
-            <p class="vidro__rot">Como funciona</p>
-            <ul class="checks"><li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Reserva do espaço: R$ 200,00</strong></span></li><li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Cada convidado recebe sua própria comanda</strong></span></li><li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Cada um paga apenas o que consumir</strong></span></li></ul>
-          </div>
-          <div class="vidro__bloco">
-            <p class="vidro__rot">Ideal para</p>
-            <p class="vidro__compartilhar">Aniversários, confraternizações, encontros de família e eventos em grupo.</p>
-          </div>
-          <div class="vidro__acao">
-            <a class="btn btn--amarelo" href="#" data-wa="Oi! Quero reservar a DIO com o Pacote DIO Exclusivo. Pode me passar as datas?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5 5.3 15.6A8 8 0 1 1 8.6 18.8Z"/><path d="M9 10.5h6M9 13.5h4"/></svg>Reservar pelo WhatsApp</a>
-            <p class="vidro__nota">Você reúne a galera, a DIO cuida do espaço e cada um escolhe o que quiser consumir.</p>
-          </div>
+            <figure class="vidro__foto"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-foto="foto_chapa" alt="Hambúrgueres na chapa com cheddar"></figure>
+            <div class="vidro__bloco">
+              <p class="vidro__rot">Como funciona</p>
+              <ul class="checks">
+                <li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Espaço só para a sua turma</strong></span></li>
+                <li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Comanda individual</strong> <small>para cada convidado</small></span></li>
+                <li><svg class="chk" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Cada um paga o que consumir</strong></span></li>
+              </ul>
+            </div>
+            <div class="vidro__acao">
+              <a class="btn btn--amarelo" href="#" data-wa="Oi! Quero reservar a DIO com o Pacote DIO Exclusivo. Pode me passar as datas?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5 5.3 15.6A8 8 0 1 1 8.6 18.8Z"/><path d="M9 10.5h6M9 13.5h4"/></svg>Reservar pelo WhatsApp</a>
+            </div>
           </div>
         </article></li>
       </ul>
